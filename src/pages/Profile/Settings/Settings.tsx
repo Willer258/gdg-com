@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col, Container, Form, Input, Label, Nav, NavItem, NavLink, Row, TabContent, TabPane } from 'reactstrap';
 import classnames from "classnames";
-import Flatpickr from "react-flatpickr";
 
 //import images
 import progileBg from '../../../../assets/images/profile-bg.jpg';
@@ -11,7 +10,7 @@ import avatar1 from '../../../../assets/images/users/avatar-1.jpg';
 const Settings = () => {
     const [activeTab, setActiveTab] = useState("1");
 
-    const tabChange = (tab) => {
+    const tabChange = (tab: React.SetStateAction<string>) => {
         if (activeTab !== tab) setActiveTab(tab);
     };
 
@@ -77,7 +76,7 @@ const Settings = () => {
                                     </div>
                                     <div className="progress animated-progress custom-progress progress-label">
                                         <div className="progress-bar bg-danger" role="progressbar" style={{ "width": "30%" }}
-                                            aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                            aria-valuenow={30} aria-valuemin={0} aria-valuemax={100}>
                                             <div className="label">30%</div>
                                         </div>
                                     </div>
@@ -228,12 +227,12 @@ const Settings = () => {
                                                         <div className="mb-3">
                                                             <Label htmlFor="JoiningdatInput" className="form-label">Joining
                                                                 Date</Label>
-                                                            <Flatpickr
+                                                            {/* <Flatpickr
                                                                 className="form-control"
                                                                 options={{
                                                                     dateFormat: "d M, Y"
                                                                 }}
-                                                            />
+                                                            /> */}
                                                         </div>
                                                     </Col>
                                                     <Col lg={12}>
@@ -284,8 +283,8 @@ const Settings = () => {
                                                         <div className="mb-3">
                                                             <Label htmlFor="zipcodeInput" className="form-label">Zip
                                                                 Code</Label>
-                                                            <Input type="text" className="form-control" minLength="5"
-                                                                maxLength="6" id="zipcodeInput"
+                                                            <Input type="text" className="form-control" minLength={5}
+                                                                maxLength={6} id="zipcodeInput"
                                                                 placeholder="Enter zipcode" defaultValue="90011" />
                                                         </div>
                                                     </Col>
@@ -295,7 +294,7 @@ const Settings = () => {
                                                                 className="form-label">Description</Label>
                                                             <textarea className="form-control"
                                                                 id="exampleFormControlTextarea"
-                                                                rows="3" defaultValue="Hi I'm Anna Adame, It will be as simple as Occidental; in fact, it will be Occidental. To an English person, it will seem like simplified English, as a skeptical Cambridge friend of mine told me what Occidental is European languages are members of the same family."></textarea>
+                                                                rows={3} defaultValue="Hi I'm Anna Adame, It will be as simple as Occidental; in fact, it will be Occidental. To an English person, it will seem like simplified English, as a skeptical Cambridge friend of mine told me what Occidental is European languages are members of the same family."></textarea>
                                                         </div>
                                                     </Col>
                                                     <Col lg={12}>
@@ -530,7 +529,7 @@ const Settings = () => {
                                                                 <div className="mb-3">
                                                                     <Label htmlFor="jobDescription" className="form-label">Job
                                                                         Description</Label>
-                                                                    <Input type='teaxtarea'
+                                                                    <Input type='textarea'
                                                                         className="form-control" id="jobDescription"
                                                                         rows="3"
                                                                         placeholder='Enter description'

@@ -53,8 +53,6 @@ const Layout = (props:any) => {
     }));
 
 
-    console.log(layoutType, 'lmlm')
-
     /*
     layout settings
     */

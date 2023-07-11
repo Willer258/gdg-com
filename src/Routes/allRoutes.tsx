@@ -195,6 +195,10 @@ import ForgetPasswordPage from "../pages/Authentication/ForgetPassword";
 import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
 import ProjectList from "../pages/Projects/ProjectList";
+import CreateProject from "../pages/Projects/CreateProject";
+import ProjectOverview from "../pages/Projects/ProjectOverview";
+import EditProject from "../pages/Projects/EditProject";
+import SimplePage from "../pages/Profile/SimplePage/SimplePage";
 
 // //Charts
 // import LineCharts from "../pages/Charts/ApexCharts/LineCharts";
@@ -278,8 +282,10 @@ const authProtectedRoutes = [
 
   // //Projects
   // { path: "/apps-projects-list", component: <ProjectList /> },
-  // { path: "/apps-projects-overview", component: <ProjectOverview /> },
-  // { path: "/apps-projects-create", component: <CreateProject /> },
+  { path: "/detail-events", component: <ProjectOverview /> },
+  { path: "/create-event", component: <CreateProject /> },
+  
+  { path: "/edit-event", component: <EditProject /> },
 
   // //Task
   // { path: "/apps-tasks-list-view", component: <TaskList /> },
@@ -418,7 +424,7 @@ const authProtectedRoutes = [
 
   // //Pages
   { path: "/dashboard", component: <Starter /> },
-  // { path: "/pages-profile", component: <SimplePage /> },
+  { path: "/details-membre", component: <SimplePage /> },
   // { path: "/pages-profile-settings", component: <Settings /> },
   { path: "/membres", component: <Team /> },
   { path: "/evenements", component: <ProjectList /> },

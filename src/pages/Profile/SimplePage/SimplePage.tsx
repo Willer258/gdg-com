@@ -3,43 +3,41 @@ import { Link } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Input, Label, Nav, NavItem, NavLink, Pagination, PaginationItem, PaginationLink, Progress, Row, TabContent, Table, TabPane, UncontrolledCollapse, UncontrolledDropdown } from 'reactstrap';
 import classnames from 'classnames';
 import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Autoplay } from "swiper";
 
 //Images
-import profileBg from '../../../../assets/images/profile-bg.jpg';
-import avatar1 from '../../../../assets/images/users/avatar-1.jpg';
-import avatar2 from '../../../../assets/images/users/avatar-2.jpg';
-import avatar3 from '../../../../assets/images/users/avatar-3.jpg';
-import avatar4 from '../../../../assets/images/users/avatar-4.jpg';
-import avatar5 from '../../../../assets/images/users/avatar-5.jpg';
-import avatar6 from '../../../../assets/images/users/avatar-6.jpg';
-import avatar7 from '../../../../assets/images/users/avatar-7.jpg';
-import avatar8 from '../../../../assets/images/users/avatar-8.jpg';
+import profileBg from '../../../assets/images/profile-bg.jpg';
+import avatar1 from '../../../assets/images/users/avatar-1.jpg';
+import avatar2 from '../../../assets/images/users/avatar-2.jpg';
+import avatar3 from '../../../assets/images/users/avatar-3.jpg';
+import avatar4 from '../../../assets/images/users/avatar-4.jpg';
+import avatar5 from '../../../assets/images/users/avatar-5.jpg';
+import avatar6 from '../../../assets/images/users/avatar-6.jpg';
+import avatar7 from '../../../assets/images/users/avatar-7.jpg';
+import avatar8 from '../../../assets/images/users/avatar-8.jpg';
 
-import smallImage2 from '../../../../assets/images/small/img-2.jpg';
-import smallImage3 from '../../../../assets/images/small/img-3.jpg';
-import smallImage4 from '../../../../assets/images/small/img-4.jpg';
-import smallImage5 from '../../../../assets/images/small/img-5.jpg';
-import smallImage6 from '../../../../assets/images/small/img-6.jpg';
-import smallImage7 from '../../../../assets/images/small/img-7.jpg';
-import smallImage9 from '../../../../assets/images/small/img-9.jpg';
+import smallImage2 from '../../../assets/images/small/img-2.jpg';
+import smallImage3 from '../../../assets/images/small/img-3.jpg';
+import smallImage4 from '../../../assets/images/small/img-4.jpg';
+import smallImage5 from '../../../assets/images/small/img-5.jpg';
+import smallImage6 from '../../../assets/images/small/img-6.jpg';
+import smallImage7 from '../../../assets/images/small/img-7.jpg';
+import smallImage9 from '../../../assets/images/small/img-9.jpg';
 
-import { projects, document } from '../../../../common/data';
+import { documents, projects } from '../../../common/data';
 
 const SimplePage = () => {
 
-    SwiperCore.use([Autoplay]);
 
     const [activeTab, setActiveTab] = useState('1');
     const [activityTab, setActivityTab] = useState('1');
 
-    const toggleTab = (tab) => {
+    const toggleTab = (tab: React.SetStateAction<string>) => {
         if (activeTab !== tab) {
             setActiveTab(tab);
         }
     };
 
-    const toggleActivityTab = (tab) => {
+    const toggleActivityTab = (tab: React.SetStateAction<string>) => {
         if (activityTab !== tab) {
             setActivityTab(tab);
         }
@@ -147,8 +145,8 @@ const SimplePage = () => {
                                         </NavItem>
                                     </Nav>
                                     <div className="flex-shrink-0">
-                                        <Link to="/pages-profile-settings" className="btn btn-success"><i
-                                            className="ri-edit-box-line align-bottom"></i> Edit Profile</Link>
+                                        <Link to="/edit-membre" className="btn btn-success"><i
+                                            className="ri-edit-box-line align-bottom"></i> Modifier les informations</Link>
                                     </div>
                                 </div>
 
@@ -1859,7 +1857,7 @@ const SimplePage = () => {
                                         <Card>
                                             <CardBody>
                                                 <Row>
-                                                    {(projects || []).map((item, key) => (
+                                                    {(projects || []).map((item:any, key: number) => (
                                                         <Col xxl={3} sm={6} key={key}>
                                                             <Card className={`profile-project-card shadow-none profile-project-${item.cardBorderColor}`}>
                                                                 <CardBody className="p-4">
@@ -1886,7 +1884,7 @@ const SimplePage = () => {
                                                                                         Members :</h5>
                                                                                 </div>
                                                                                 <div className="avatar-group">
-                                                                                    {(item.member || []).map((subitem, key) => (
+                                                                                    {(item.member || []).map((subitem: { img: string | undefined; }, key: React.Key | null | undefined) => (
                                                                                         <div className="avatar-group-item" key={key}>
                                                                                             <div className="avatar-xs">
                                                                                                 <img src={subitem.img} alt="" className="rounded-circle img-fluid" />
@@ -1894,7 +1892,7 @@ const SimplePage = () => {
                                                                                         </div>
                                                                                     ))}
 
-                                                                                    {(item.memberName || []).map((element, key) => (
+                                                                                    {(item.memberName || []).map((element: { memberText: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }, key: React.Key | null | undefined) => (
                                                                                         <div className="avatar-group-item" key={key}>
                                                                                             <div className="avatar-xs">
                                                                                                 <div
@@ -1953,7 +1951,7 @@ const SimplePage = () => {
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    {(document || []).map((item, key) => (
+                                                                    {(documents || []).map((item: { iconBackgroundClass: any; icon: string | undefined; fileName: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; fileType: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; fileSize: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; updatedDate: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }, key: React.Key | null | undefined) => (
                                                                         <tr key={key}>
                                                                             <td>
                                                                                 <div className="d-flex align-items-center">

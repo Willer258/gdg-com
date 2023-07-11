@@ -237,7 +237,6 @@ const Team = () => {
         dispatch(onUpdateTeamData(updateTeamData));
         validation.resetForm();
       } else {
-        console.log("first");
         const newTeamData = {
           id: (Math.floor(Math.random() * (30 - 20)) + 20).toString(),
           name: values.name,
@@ -456,7 +455,8 @@ const Team = () => {
                             <Col lg={2} className="col">
                               <div className="text-end">
                                 <Link
-                                  to="/pages-profile"
+                                to={"/details-membre"} state={{ id: item.id }}
+                              
                                   className="btn btn-light view-btn"
                                 >
                                   View Profile
@@ -474,7 +474,7 @@ const Team = () => {
                       <div className="text-center mb-3">
                         <Link to="#" className="text-success">
                           <i className="mdi mdi-loading mdi-spin fs-20 align-middle me-2"></i>{" "}
-                          Load More{" "}
+                          Loading
                         </Link>
                       </div>
                     </Col>
@@ -994,7 +994,7 @@ const Team = () => {
                   style={{ display: "none" }}
                 >
                   {/* <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style={{ width: "72px", height: "72px" }}></lord-icon> */}
-                  <h5 className="mt-4">Sorry! No Result Found</h5>
+                  <h5 className="mt-4">Une erreur est survenue</h5>
                 </div>
               )}
             </Col>

@@ -224,7 +224,7 @@ const OverviewTab = () => {
                                 <Row className="g-3">
                                     <Col xs={12} >
                                         <label htmlFor="exampleFormControlTextarea1" className="form-label text-body">Leave a Comments</label>
-                                        <textarea className="form-control bg-light border-light" id="exampleFormControlTextarea1" rows="3" placeholder="Enter your comment..."></textarea>
+                                        <textarea className="form-control bg-light border-light" id="exampleFormControlTextarea1" rows={3} placeholder="Enter your comment..."></textarea>
                                     </Col>
                                     <Col xs={12} className="text-end">
                                         <button type="button" className="btn btn-ghost-secondary btn-icon waves-effect me-1"><i className="ri-attachment-line fs-16"></i></button>

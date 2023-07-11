@@ -7,6 +7,11 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
       providesTags: [{ type: "events", id: "LIST" }],
     }),
+    getOneEvent: builder.query({
+      query: (id:string) =>`/events/${id}`,
+
+      providesTags: [{ type: "events", id: "LIST" }],
+    }),
     addEvent: builder.mutation({
         query: (initialEvent) => ({
           url: "/events",
@@ -30,7 +35,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
       }),
 
       deleteEvent: builder.mutation({
-        query: ({ id }) => ({
+        query: ({ id }) => ({ 
           url: `/events/${id}`,
           method: "DELETE",
           body: { id },
@@ -46,5 +51,6 @@ export const {
   useAddEventMutation,
   useEditEventMutation,
   useDeleteEventMutation,
+  useGetOneEventQuery,
  
 } = extendedApiSlice;

@@ -190,7 +190,7 @@ const Section = () => {
         <Col lg={12}>
           <TabContent activeTab={activeTab} className="text-muted">
             <TabPane tabId="1">
-              <OverviewTab />
+              <OverviewTab data ={data} />
             </TabPane>
             <TabPane tabId="2">
               <DocumentsTab />

@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState,  } from 'react';
 import { Link } from 'react-router-dom';
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 
@@ -8,9 +7,9 @@ import avatar1 from "../../assets/images/users/avatar-1.jpg";
 
 const ProfileDropdown = () => {
 
-    const  user  = null
+   
 
-    const [userName, setUserName] = useState("Admin");
+    const [userName] = useState("Admin");
 
     // useEffect(() => {
     //     if (sessionStorage.getItem("authUser")) {

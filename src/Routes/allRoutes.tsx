@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Navigate } from "react-router-dom";
 
 // //Dashboard
@@ -199,6 +199,7 @@ import CreateProject from "../pages/Projects/CreateProject";
 import ProjectOverview from "../pages/Projects/ProjectOverview";
 import EditProject from "../pages/Projects/EditProject";
 import SimplePage from "../pages/Profile/SimplePage/SimplePage";
+import Settings from "../pages/Profile/Settings/Settings";
 
 // //Charts
 // import LineCharts from "../pages/Charts/ApexCharts/LineCharts";
@@ -425,7 +426,7 @@ const authProtectedRoutes = [
   // //Pages
   { path: "/dashboard", component: <Starter /> },
   { path: "/details-membre", component: <SimplePage /> },
-  // { path: "/pages-profile-settings", component: <Settings /> },
+  { path: "/edit-membre", component: <Settings /> },
   { path: "/membres", component: <Team /> },
   { path: "/evenements", component: <ProjectList /> },
   // { path: "/pages-timeline", component: <Timeline /> },

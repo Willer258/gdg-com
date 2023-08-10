@@ -3,7 +3,7 @@ import { Card, CardBody, Col, Container, Input, Label, Row, Button, Form, FormFe
 import ParticlesAuth from "../AuthenticationInner/ParticlesAuth";
 
 //redux
-import { useSelector, useDispatch } from "react-redux";
+import {  useDispatch } from "react-redux";
 
 import { Link,useNavigate   } from "react-router-dom";
 import withRouter from "../../Components/Common/withRouter";
@@ -18,6 +18,7 @@ import logoLight from "../../assets/images/logo-light.png";
 //import images
 
 const Login = (props: { router: { navigate: any; }; }) => {
+    console.log(props)
     const dispatch = useDispatch();
     // const { user, error, loading, errorMsg } = useSelector(state => ({
     //     user: state.Account.user,
@@ -25,12 +26,12 @@ const Login = (props: { router: { navigate: any; }; }) => {
     //     loading: state.Login.loading,
     //     errorMsg: state.Login.errorMsg,
     // }));
-const user = null 
+// const user = null 
 const error = false
  const loading = false 
  const navigate  = useNavigate();
  const errorMsg = null
-    const [userLogin, setUserLogin]:any = useState([]);
+    const [userLogin]:any = useState([]);
     const [passwordShow, setPasswordShow] = useState(false);
 
 
@@ -58,13 +59,14 @@ const error = false
             password: Yup.string().required("Please Enter Your Password"),
         }),
         onSubmit: (values) => {
-
+            console.log(values)
             navigate('/dashboard');
             // dispatch(loginUser(values, props.router.navigate));
         }
     });
 
     const signIn = (type: any) => {
+        console.log(type)
         // dispatch(socialLogin(type, props.router.navigate));
     };
 

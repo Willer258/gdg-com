@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import withRouter from '../Components/Common/withRouter';
 
 //redux
-import { useSelector } from "react-redux";
 
 const NonAuthLayout = ({ children }:any) => {
     const layoutModeType:any  = 'light'

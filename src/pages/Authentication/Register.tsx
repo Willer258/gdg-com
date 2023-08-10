@@ -12,7 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 // import { registerUser, apiError, resetRegisterFlag } from "../../slices/thunks";
 
 //redux
-import { useSelector, useDispatch } from "react-redux";
+import {  useDispatch } from "react-redux";
 
 import { Link, useNavigate } from "react-router-dom";
 
@@ -47,6 +47,7 @@ const Register = () => {
             })
         }),
         onSubmit: (values) => {
+            console.log(values)
             // dispatch(registerUser(values));
         }
     });

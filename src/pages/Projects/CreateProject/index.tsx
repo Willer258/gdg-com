@@ -69,13 +69,13 @@ const CreateProject = () => {
     "Creer evenement | Velzon - React Admin & Dashboard Template";
 
     const navigate = useNavigate();
-  const [event, setEvent]: any = useState(null);
+  const [event]: any = useState(null);
 
   const [dateEvent, setDateEvent]: any = useState(null);
 
-  const [isEdit, setIsEdit] = useState(false);
+  // const [isEdit, setIsEdit] = useState(false);
 
-  const [addEvent, { isLoading:isLoadingAdd, isError:isErrorAdd, error:errorAdd, isSuccess:isSuccessAdd }]: any =
+  const [addEvent, {  error:errorAdd, }]: any =
   useAddEventMutation();
   const validation: any = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -262,7 +262,7 @@ const CreateProject = () => {
                           handleAcceptedFiles(acceptedFiles);
                         }}
                       >
-                        {({ getRootProps, getInputProps }) => (
+                        {({ getRootProps }) => (
                           <div className="dropzone dz-clickable">
                             <div
                               className="dz-message needsclick"

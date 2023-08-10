@@ -20,7 +20,7 @@ export const getTeamData:any = createAsyncThunk("team/getTeamData", async () => 
     }
 });
 
-export const addTeamData:any = createAsyncThunk("team/addTeamData", async (team) => {
+export const addTeamData:any = createAsyncThunk("team/addTeamData", async () => {
     try {
         const response = null
         // addTeamDataApi(team);
@@ -32,7 +32,7 @@ export const addTeamData:any = createAsyncThunk("team/addTeamData", async (team)
     }
 });
 
-export const updateTeamData:any = createAsyncThunk("team/updateTeamData", async (project) => {
+export const updateTeamData:any = createAsyncThunk("team/updateTeamData", async () => {
     try {
         const response = null
         // updateTeamDataApi(project);
@@ -44,7 +44,7 @@ export const updateTeamData:any = createAsyncThunk("team/updateTeamData", async 
     }
 });
 
-export const deleteTeamData:any = createAsyncThunk("team/deleteTeamData", async (project) => {
+export const deleteTeamData:any = createAsyncThunk("team/deleteTeamData", async () => {
     try {
         const response = null;
         //  deleteTeamDataApi(project);

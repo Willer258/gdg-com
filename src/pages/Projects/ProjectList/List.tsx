@@ -25,7 +25,10 @@ import { useGetEventsQuery } from "../../../redux/features/services/eventsServic
 // } from "../../../slices/thunks";
 
 const List = () => {
-  const { data = [], isLoading, isError, error } = useGetEventsQuery(1);
+  const { data = [], isLoading, isError, 
+    // error
+  
+  } = useGetEventsQuery(1);
 
   const projectLists = data.results ?? [];
   const [project, setProject] = useState(null);

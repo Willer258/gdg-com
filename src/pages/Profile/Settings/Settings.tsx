@@ -4,8 +4,8 @@ import { Card, CardBody, CardHeader, Col, Container, Form, Input, Label, Nav, Na
 import classnames from "classnames";
 
 //import images
-import progileBg from '../../../../assets/images/profile-bg.jpg';
-import avatar1 from '../../../../assets/images/users/avatar-1.jpg';
+import progileBg from '../../../assets/images/profile-bg.jpg';
+import avatar1 from '../../../assets/images/users/avatar-1.jpg';
 
 const Settings = () => {
     const [activeTab, setActiveTab] = useState("1");

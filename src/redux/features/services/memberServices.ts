@@ -7,6 +7,11 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
       providesTags: [{ type: "members", id: "LIST" }],
     }),
+    getOneMember: builder.query({
+      query: (id:string) =>`/members/${id}`,
+
+      providesTags: [{ type: "events", id: "LIST" }],
+    }),
     addMember: builder.mutation({
         query: (initialMember) => ({
           url: "/members",
@@ -43,6 +48,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetMembersQuery,
+  useGetOneMemberQuery,
   useAddMemberMutation,
   useEditMemberMutation,
   useDeleteMemberMutation,

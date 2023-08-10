@@ -1,4 +1,3 @@
-import React from 'react';
 
 //constants
 import { layoutModeTypes } from "../constants/layout";

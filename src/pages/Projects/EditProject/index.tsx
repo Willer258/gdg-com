@@ -74,7 +74,6 @@ const EditProject = () => {
     "Modifier l'évenement | Velzon - React Admin & Dashboard Template";
 
   const navigate = useNavigate();
-  const [event, setEvent]: any = useState(null);
 
   const [dateEvent, setDateEvent]: any = useState(null);
   
@@ -83,10 +82,10 @@ const EditProject = () => {
   const [
     editEvent,
     {
-      isLoading: isLoadingAdd,
-      isError: isErrorAdd,
+      // isLoading: isLoadingAdd,
+      // isError: isErrorAdd,
       error: errorAdd,
-      isSuccess: isSuccessAdd,
+      // isSuccess: isSuccessAdd,
     },
   ]: any = useEditEventMutation();
 
@@ -322,7 +321,7 @@ console.log(isActive, 'isActive')
                           handleAcceptedFiles(acceptedFiles);
                         }}
                       >
-                        {({ getRootProps, getInputProps }) => (
+                        {({ getRootProps}) => (
                           <div className="dropzone dz-clickable">
                             <div
                               className="dz-message needsclick"

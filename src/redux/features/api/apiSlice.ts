@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { RootState } from "../../app/store";
+// import { RootState } from "../../app/store";
 
 
 console.log(import.meta.env.VITE_APP_API_URL)
@@ -20,5 +20,5 @@ export const apiSlice = createApi({
   tagTypes: [
   "members","events"
   ],
-  endpoints: (builder) => ({}),
+  endpoints: () => ({}),
 });

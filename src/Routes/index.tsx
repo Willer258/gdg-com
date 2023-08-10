@@ -7,7 +7,7 @@ import VerticalLayout from "../Layouts/index";
 
 // Routes
 import { authProtectedRoutes, publicRoutes } from "./allRoutes";
-import { AuthProtected } from './AuthProtected';
+// import { AuthProtected } from './AuthProtected';
 
 const Index: React.FC = () => {
     return (

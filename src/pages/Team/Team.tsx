@@ -6,7 +6,6 @@ import {
   CardBody,
   Col,
   Container,
-  Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
@@ -37,7 +36,6 @@ import { useSelector, useDispatch } from "react-redux";
 //import action
 import {
   getTeamData as onGetTeamData,
-  deleteTeamData as onDeleteTeamData,
   addTeamData as onAddTeamData,
   updateTeamData as onUpdateTeamData,
 } from "../../redux/thunks";
@@ -45,21 +43,49 @@ import {
 // Formik
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { useAddMemberMutation, useDeleteMemberMutation, useEditMemberMutation, useGetMembersQuery } from "../../redux/features/services/memberServices";
+import {
+  useAddMemberMutation,
+  useDeleteMemberMutation,
+  useEditMemberMutation,
+  useGetMembersQuery,
+} from "../../redux/features/services/memberServices";
 
 const Team = () => {
   document.title = "Team | Velzon - React Admin & Dashboard Template";
 
   const dispatch = useDispatch();
 
-  const { data = [], isLoading, isError, error } = useGetMembersQuery(1);
-  
-  const [addMember, { isLoading:isLoadingAdd, isError:isErrorAdd, error:errorAdd, isSuccess:isSuccessAdd }]: any =
-  useAddMemberMutation();
-  const [editMember, { isLoading:isLoadingEdit, isError:isErrorEdit, error:errorEdit, isSuccess:isSuccessEdit }]: any =
-  useEditMemberMutation();
-  const [deleteMember, { isLoading:isLoadingDelete, isError:isErrorDelete, error:errorDelete, isSuccess:isSuccessDelete }]: any =
-  useDeleteMemberMutation();
+  const { data = [], isLoading, isError,
+    //  errorcl
+     } = useGetMembersQuery(1);
+
+  const [
+    addMember,
+    {
+      // isLoading: isLoadingAdd,
+      // isError: isErrorAdd,
+      error: errorAdd,
+      // isSuccess: isSuccessAdd,
+    },
+  ]: any = useAddMemberMutation();
+  const [
+    editMember,
+    {
+      // isLoading: isLoadingEdit,
+      // isError: isErrorEdit,
+      error: errorEdit,
+      // isSuccess: isSuccessEdit,
+    },
+  ]: any = useEditMemberMutation();
+  const [
+    deleteMember,
+    {
+      // isLoading: isLoadingDelete,
+      // isError: isErrorDelete,
+      error: errorDelete,
+      // isSuccess: isSuccessDelete,
+    },
+  ]: any = useDeleteMemberMutation();
 
   const { teamData } = useSelector((state: any) => ({
     teamData: state.Team.teamData,
@@ -70,7 +96,7 @@ const Team = () => {
   const [teamList, setTeamlist] = useState([]);
 
   //Modal
-  const [teamMem, setTeamMem]:any = useState(null);
+  const [teamMem, setTeamMem]: any = useState(null);
   const [isEdit, setIsEdit] = useState(false);
   const [modal, setModal] = useState(false);
 
@@ -95,8 +121,7 @@ const Team = () => {
   // Update To do
   const handleTeamClick = useCallback(
     (arg: any) => {
-
-        console.log('first')
+      console.log("first");
       const teamMem = arg;
       setTeamMem({
         id: teamMem.id,
@@ -126,16 +151,15 @@ const Team = () => {
     setDeleteModal(true);
   };
 
-  const handleDeleteTeamData =async  () => {
+  const handleDeleteTeamData = async () => {
     if (team) {
-      
-        try {
-            await deleteMember({ id: team }).unwrap();
-            window.history.back();
-          } catch (err) {
-            console.error(errorDelete, err);
-          }
-        deleteMember
+      try {
+        await deleteMember({ id: team }).unwrap();
+        window.history.back();
+      } catch (err) {
+        console.error(errorDelete, err);
+      }
+      deleteMember;
       setDeleteModal(false);
     }
   };
@@ -208,7 +232,6 @@ const Team = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [sideBar, setSideBar]: any = useState([]);
 
-
   // validation
   const validation: any = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -254,8 +277,6 @@ const Team = () => {
   });
 
   const Validate = async (formData: any) => {
-
-  
     try {
       await addMember({
         first_name: formData.first_name,
@@ -264,25 +285,28 @@ const Team = () => {
         commune: formData.commune,
       }).unwrap();
     } catch (err) {
-        console.log(errorAdd)
+      console.log(errorAdd);
     }
   };
 
-
   const EditMember = async (formData: any) => {
-
-  
     try {
       await editMember({
         id: teamMem ? teamMem.id : 0,
-        first_name: formData.first_name !== teamMem.first_name ? formData.first_name : undefined,
-        last_name: formData.last_name !== teamMem.last_name ? formData.last_name : undefined,
+        first_name:
+          formData.first_name !== teamMem.first_name
+            ? formData.first_name
+            : undefined,
+        last_name:
+          formData.last_name !== teamMem.last_name
+            ? formData.last_name
+            : undefined,
         email: formData.email !== teamMem.email ? formData.email : undefined,
-        commune: formData.commune !== teamMem.commune ? formData.commune : undefined,
-        
+        commune:
+          formData.commune !== teamMem.commune ? formData.commune : undefined,
       }).unwrap();
     } catch (err) {
-        console.log(errorEdit)
+      console.log(errorEdit);
     }
   };
 
@@ -447,7 +471,9 @@ const Team = () => {
                                   <h5 className="mb-0"> {item.commune}</h5>
                                 </Col>
                                 <Col xs={6}>
-                                  <p className="text-muted mb-0">Contribution</p>
+                                  <p className="text-muted mb-0">
+                                    Contribution
+                                  </p>
                                   <h5 className="mb-1">0</h5>
                                 </Col>
                               </Row>
@@ -455,8 +481,8 @@ const Team = () => {
                             <Col lg={2} className="col">
                               <div className="text-end">
                                 <Link
-                                to={"/details-membre"} state={{ id: item.id }}
-                              
+                                  to={"/details-membre"}
+                                  state={{ id: item.id }}
                                   className="btn btn-light view-btn"
                                 >
                                   View Profile
@@ -492,17 +518,15 @@ const Team = () => {
                       <ModalBody>
                         <Form
                           onSubmit={(e) => {
-
-
                             if (isEdit) {
-                               EditMember(validation.values)
-                                }else{
-                                    Validate(validation.values)
-                                }
-                            
+                              EditMember(validation.values);
+                            } else {
+                              Validate(validation.values);
+                            }
+
                             validation.handleSubmit();
                             e.preventDefault();
-                            
+
                             return false;
                           }}
                         >
@@ -677,8 +701,6 @@ const Team = () => {
                                 ) : null}
                               </div>
                             </Col>
-
-                         
 
                             <Col lg={12}>
                               <div className="mb-3">

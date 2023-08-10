@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Container, Row } from 'reactstrap';
+import {  Container, Row } from 'reactstrap';
 import BreadCrumb from '../../Components/Common/BreadCrumb';
 
 const Starter = () => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 import {
   Card,
   CardBody,
@@ -31,8 +31,7 @@ const EditProject = () => {
 
   const {
     data: DataMember = [],
-    isLoading: isLoadingMember,
-    isError: isErrorMember,
+   
   } = useGetMembersQuery(1);
 
 
@@ -85,15 +84,6 @@ const EditProject = () => {
   /**
    * Formats the size
    */
-  const formatBytes = (bytes: any, decimals = 2) => {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
-  };
 
   document.title =
     "Modifier l'évenement | Velzon - React Admin & Dashboard Template";

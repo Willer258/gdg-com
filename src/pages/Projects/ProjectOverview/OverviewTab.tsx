@@ -1,15 +1,11 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import {
   Card,
   CardBody,
   CardHeader,
   Col,
-  Form,
-  Label,
-  Modal,
-  ModalBody,
-  ModalHeader,
+ 
   Row,
 } from "reactstrap";
 
@@ -18,9 +14,6 @@ import avatar2 from "../../../assets/images/users/avatar-2.jpg";
 
 //SimpleBar
 import SimpleBar from "simplebar-react";
-import { useFormik } from "formik";
-import { useGetMembersQuery } from "../../../redux/features/services/memberServices";
-import { useAddMembreOnEventMutation } from "../../../redux/features/services/eventsServices";
 
 const OverviewTab = ({ data }: any) => {
   console.log(data.organizers_team);

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 import {
   Card,
   CardBody,
@@ -37,7 +37,7 @@ const Settings = () => {
 
   const { state } = useLocation();
 
-  const { isError, isLoading, data = [] } = useGetOneMemberQuery(state.id);
+  const {   data = [] } = useGetOneMemberQuery(state.id);
 
   const [
     editMember,

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import {
   Card,
   CardBody,
@@ -23,15 +23,9 @@ import { useAddEventMutation } from "../../../redux/features/services/eventsServ
 import { useGetMembersQuery } from "../../../redux/features/services/memberServices";
 
 const CreateProject = () => {
-  const SingleOptions = [
-    { value: "Watches", label: "Watches" },
-    { value: "Headset", label: "Headset" },
-    { value: "Sweatshirt", label: "Sweatshirt" },
-    { value: "20% off", label: "20% off" },
-    { value: "4 star", label: "4 star" },
-  ];
 
-  const { data = [], isLoading, isError,
+
+  const { data = [],
     //  errorcl
      } = useGetMembersQuery(1);
 

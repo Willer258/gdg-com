@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Row, Col, Card, CardBody, Progress, Table } from "reactstrap";
+import { Row, Col, Card, CardBody,  Table } from "reactstrap";
 // import { SwiperSlide , Swiper } from 'swiper/react';
 // import classnames from 'classnames';
 

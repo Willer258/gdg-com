@@ -15,8 +15,6 @@ import classnames from "classnames";
 //import images
 import slack from "../../../assets/images/brands/slack.png";
 import OverviewTab from "./OverviewTab";
-import DocumentsTab from "./DocumentsTab";
-import ActivitiesTab from "./ActivitiesTab";
 import TeamTab from "./TeamTab";
 import { useGetOneEventQuery } from "../../../redux/features/services/eventsServices";
 import { Link, useLocation } from "react-router-dom";

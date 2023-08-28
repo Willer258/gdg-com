@@ -15,46 +15,71 @@ import BreadCrumb from "../../../Components/Common/BreadCrumb";
 //Import Flatepicker
 // import Flatpickr from "react-flatpickr";
 import Select from "react-select";
-
-import Dropzone from "react-dropzone";
-
-//Import Images
-import avatar3 from "../../../assets/images/users/avatar-3.jpg";
-import avatar4 from "../../../assets/images/users/avatar-4.jpg";
-import { useFormik } from "formik";
 import {
   useEditEventMutation,
   useGetOneEventQuery,
 } from "../../../redux/features/services/eventsServices";
+import { useGetMembersQuery } from "../../../redux/features/services/memberServices";
+import { useFormik } from "formik";
 
 const EditProject = () => {
   const { state } = useLocation();
 
-  const { isError, isLoading, data } = useGetOneEventQuery(state.id);
-  const SingleOptions = [
-    { value: "Watches", label: "Watches" },
-    { value: "Headset", label: "Headset" },
-    { value: "Sweatshirt", label: "Sweatshirt" },
-    { value: "20% off", label: "20% off" },
-    { value: "4 star", label: "4 star" },
-  ];
+  const { isError, isLoading, data }:any = useGetOneEventQuery(state.id);
+
   const [selectedMulti, setselectedMulti] = useState(null);
 
+  const {
+    data: DataMember = [],
+    isLoading: isLoadingMember,
+    isError: isErrorMember,
+  } = useGetMembersQuery(1);
+
+
+  const memberOptions =
+    DataMember.results &&
+    DataMember.results.map((item: any) => ({
+      value: item.id,
+      label: item.first_name + " " + item.last_name,
+    }));
+
+    const defaultValueMember = data && JSON.parse(data.organizers_team).map((item: any) => ({
+      value: item.id,
+      label: item.first_name + " " + item.last_name
+    }))
+    
+
+
+    useEffect(() => {
+      setselectedMulti(defaultValueMember);
+    }, [])
+    
+
+  const [Membres, setMembres]: any = useState([]);
+
   const handleMulti = (selectedMulti?: any) => {
-    setselectedMulti(selectedMulti);
-  };
+    console.log(selectedMulti, "sell");
 
-  //Dropzone file upload
-  const [selectedFiles, setselectedFiles] = useState([]);
-
-  const handleAcceptedFiles = (files: any) => {
-    files.map((file: any) =>
-      Object.assign(file, {
-        preview: URL.createObjectURL(file),
-        formattedSize: formatBytes(file.size),
-      })
+    const nouveauTableau = selectedMulti.map(
+      (selection: { label: any; value: any }) => {
+        const element = DataMember && DataMember.results.find(
+          (item: { id: any }) => item.id === selection.value
+        );
+        console.log(element);
+        if (element) {
+          return {
+            id: element.id,
+            first_name: element.first_name,
+            last_name: element.last_name,
+          };
+        }
+      }
     );
-    setselectedFiles(files);
+
+    setMembres(JSON.stringify(nouveauTableau));
+    console.log(JSON.stringify(nouveauTableau));
+
+    setselectedMulti(selectedMulti);
   };
 
   /**
@@ -76,7 +101,7 @@ const EditProject = () => {
   const navigate = useNavigate();
 
   const [dateEvent, setDateEvent]: any = useState(null);
-  
+
   const [isActive, setIsActive]: any = useState(null);
 
   const [
@@ -89,16 +114,13 @@ const EditProject = () => {
     },
   ]: any = useEditEventMutation();
 
-useEffect(() => {
-    if(data){
-        setDateEvent(data && data.date) ;
-        setIsActive(data && data.is_active ? 'En cours' : 'Terminée' ) ;
+  useEffect(() => {
+    if (data) {
+      setDateEvent(data && data.date);
+      setIsActive(data && data.is_active ? "En cours" : "Terminée");
     }
-   
-}, [data])
+  }, [data]);
 
- 
-console.log(isActive, 'isActive')
   const validation: any = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
@@ -106,36 +128,45 @@ console.log(isActive, 'isActive')
     initialValues: {
       name: (data && data.name) || "",
       lieu: (data && data.lieu) || "",
+      description: (data && data.description) || "",
+      manager: (data && data.manager) || "",
+      isActive: (data && data.is_active) || "",
+
     },
 
     onSubmit: async (values: any) => {
       values.is_active = isActive === "En cours" ? true : false;
-       
-      console.log(values, "values");
+      values.date = dateEvent
       
-      
-      
-      
-        const DataValidate = { ...values, date: dateEvent , };
 
-        console.log(DataValidate,'okokokokokijijij')
-        try {
-          await editEvent({
+      console.log(values , 'lomia')
+      const DataValidate = { ...values, organizers_team: Membres ,  };
 
-            id:state.id,
-            name: DataValidate.name !== data.name ? DataValidate.name : undefined,
-            lieu: DataValidate.lieu !== data.lieu ? DataValidate.lieu : undefined,
-            date: DataValidate.date !== data.date ? DataValidate.date : undefined,
-            is_active: DataValidate.is_active !== data.is_active ? DataValidate.is_active : undefined,
-          
-          }).unwrap();
-          navigate(-1)
+      console.log(DataValidate, "okokokokokijijij");
 
-        } catch (err) {
-            console.log(errorAdd)
-        }
 
-      validation.resetForm();
+      try {
+        await editEvent({
+          id: state.id,
+          name: DataValidate.name !== data.name ? DataValidate.name : undefined,
+          lieu: DataValidate.lieu !== data.lieu ? DataValidate.lieu : undefined,
+          date: DataValidate.date !== data.date ? DataValidate.date : undefined,
+          is_active:
+            DataValidate.is_active !== data.is_active
+              ? DataValidate.is_active
+              : undefined,
+
+          description: DataValidate.description !== data.description
+            ? DataValidate.description : undefined,
+          manager: DataValidate.manager !== data.manager ? DataValidate.manager : undefined,
+          organizers_team : DataValidate.organizers_team !== data.organizers_team ? DataValidate.organizers_team : undefined
+        }).unwrap();
+        navigate(-1);
+      } catch (err) {
+        console.log(errorAdd);
+      }
+
+      validation.resetForm();  
     },
   });
 
@@ -244,7 +275,22 @@ console.log(isActive, 'isActive')
 
                     <div className="mb-3">
                       <Label className="form-label">Description </Label>
-                      <Input id="exampleText" name="text" type="textarea" />
+                      
+                      <Input
+                        type="textarea"
+                        className="form-control"
+                        id="description"
+                      
+                        defaultValue={data.description}
+                        onChange={validation.handleChange}
+                        onBlur={validation.handleBlur}
+                        value={validation.values.description || ""}
+                        invalid={
+                          validation.touched.description && validation.errors.description
+                            ? true
+                            : false
+                        }
+                      />
                     </div>
 
                     <Row>
@@ -258,12 +304,9 @@ console.log(isActive, 'isActive')
                             type="select"
                             name="isActive"
                             id="isActive"
-                           
                             onChange={(e) => setIsActive(e.target.value)}
                             onBlur={validation.handleBlur}
-                            value={
-                                isActive
-                            }
+                            value={isActive}
                             invalid={
                               validation.touched.isActive &&
                               validation.errors.isActive
@@ -308,72 +351,6 @@ console.log(isActive, 'isActive')
                     </Row>
                   </CardBody>
                 </Card>
-                <Card>
-                  <CardHeader>
-                    <h5 className="card-title mb-0">Photos souvenirs</h5>
-                  </CardHeader>
-                  <CardBody>
-                    <div>
-                      <p className="text-muted">Ajoutez les photos ici.</p>
-
-                      <Dropzone
-                        onDrop={(acceptedFiles) => {
-                          handleAcceptedFiles(acceptedFiles);
-                        }}
-                      >
-                        {({ getRootProps}) => (
-                          <div className="dropzone dz-clickable">
-                            <div
-                              className="dz-message needsclick"
-                              {...getRootProps()}
-                            >
-                              <div className="mb-3">
-                                <i className="display-4 text-muted ri-upload-cloud-2-fill" />
-                              </div>
-                              <h4>Glisser les fichiers ici !</h4>
-                            </div>
-                          </div>
-                        )}
-                      </Dropzone>
-
-                      <ul className="list-unstyled mb-0" id="dropzone-preview">
-                        {selectedFiles.map((f: any, i: number) => {
-                          return (
-                            <Card
-                              className="mt-1 mb-0 shadow-none border dz-processing dz-image-preview dz-success dz-complete"
-                              key={i + "-file"}
-                            >
-                              <div className="p-2">
-                                <Row className="align-items-center">
-                                  <Col className="col-auto">
-                                    <img
-                                      data-dz-thumbnail=""
-                                      height="80"
-                                      className="avatar-sm rounded bg-light"
-                                      alt={f.name}
-                                      src={f.preview}
-                                    />
-                                  </Col>
-                                  <Col>
-                                    <Link
-                                      to="#"
-                                      className="text-muted font-weight-bold"
-                                    >
-                                      {f.name}
-                                    </Link>
-                                    <p className="mb-0">
-                                      <strong>{f.formattedSize}</strong>
-                                    </p>
-                                  </Col>
-                                </Row>
-                              </div>
-                            </Card>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  </CardBody>
-                </Card>
 
                 <div className="text-end mb-4">
                   <button
@@ -416,45 +393,6 @@ console.log(isActive, 'isActive')
                 </CardBody>
               </div> */}
 
-              <div className="card">
-                <div className="card-header">
-                  <h5 className="card-title mb-0">Caracteristiques</h5>
-                </div>
-                <CardBody>
-                  <div className="mb-3">
-                    <Label
-                      htmlFor="choices-categories-input"
-                      className="form-label"
-                    >
-                      Categories
-                    </Label>
-                    <select
-                      className="form-select"
-                      data-choices
-                      data-choices-search-false
-                      id="choices-categories-input"
-                    >
-                      <option defaultValue="Designing">Design</option>
-                      <option value="Development">Devellopement</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="choices-text-input" className="form-label">
-                      Tags
-                    </Label>
-                    <Select
-                      value={selectedMulti}
-                      isMulti={true}
-                      onChange={() => {
-                        handleMulti();
-                      }}
-                      options={SingleOptions}
-                    />
-                  </div>
-                </CardBody>
-              </div>
-
               <Card>
                 <CardHeader>
                   <h5 className="card-title mb-0">Contributeurs</h5>
@@ -462,93 +400,39 @@ console.log(isActive, 'isActive')
                 <CardBody>
                   <div className="mb-3">
                     <Label htmlFor="choices-lead-input" className="form-label">
-                      Chef{" "}
+                      Responsable de l'evenement
                     </Label>
-                    <select
-                      className="form-select"
-                      data-choices
-                      data-choices-search-false
-                      id="choices-lead-input"
-                    >
-                      <option defaultValue="Brent Gonzalez">
-                        Brent Gonzalez
-                      </option>
-                      <option value="Darline Williams">Darline Williams</option>
-                      <option value="Sylvia Wright">Sylvia Wright</option>
-                      <option value="Ellen Smith">Ellen Smith</option>
-                      <option value="Jeffrey Salazar">Jeffrey Salazar</option>
-                      <option value="Mark Williams">Mark Williams</option>
-                    </select>
+                    
+                    <Input
+                      type="text"
+                      className="form-control"
+                      id="manager"
+                      placeholder="Entrer le nom du responsable de l'evenement"
+                      defaultValue={data.manager}
+                      onChange={validation.handleChange}
+                      onBlur={validation.handleBlur}
+                      value={validation.values.manager || ""}
+                      invalid={
+                        validation.touched.manager && validation.errors.manager
+                          ? true
+                          : false
+                      }
+                    />
                   </div>
 
                   <div>
-                    <Label className="form-label"> Membres</Label>
-                    <div className="avatar-group">
-                      <Link
-                        to="#"
-                        className="avatar-group-item"
-                        data-bs-toggle="tooltip"
-                        data-bs-trigger="hover"
-                        data-bs-placement="top"
-                        title="Brent Gonzalez"
-                      >
-                        <div className="avatar-xs">
-                          <img
-                            src={avatar3}
-                            alt=""
-                            className="rounded-circle img-fluid"
-                          />
-                        </div>
-                      </Link>
-                      <Link
-                        to="#"
-                        className="avatar-group-item"
-                        data-bs-toggle="tooltip"
-                        data-bs-trigger="hover"
-                        data-bs-placement="top"
-                        title="Sylvia Wright"
-                      >
-                        <div className="avatar-xs">
-                          <div className="avatar-title rounded-circle bg-secondary">
-                            S
-                          </div>
-                        </div>
-                      </Link>
-                      <Link
-                        to="#"
-                        className="avatar-group-item"
-                        data-bs-toggle="tooltip"
-                        data-bs-trigger="hover"
-                        data-bs-placement="top"
-                        title="Ellen Smith"
-                      >
-                        <div className="avatar-xs">
-                          <img
-                            src={avatar4}
-                            alt=""
-                            className="rounded-circle img-fluid"
-                          />
-                        </div>
-                      </Link>
-                      <Link
-                        to="#"
-                        className="avatar-group-item"
-                        data-bs-toggle="tooltip"
-                        data-bs-trigger="hover"
-                        data-bs-placement="top"
-                        title="Add Members"
-                      >
-                        <div
-                          className="avatar-xs"
-                          data-bs-toggle="modal"
-                          data-bs-target="#inviteMembersModal"
-                        >
-                          <div className="avatar-title fs-16 rounded-circle bg-light border-dashed border text-primary">
-                            +
-                          </div>
-                        </div>
-                      </Link>
-                    </div>
+                    <Label className="form-label"> Membres </Label>
+                    <Select
+                      value={selectedMulti}
+                      defaultValue={defaultValueMember}
+                      isMulti={true}
+                      isClearable={true}
+                      onChange={(value) => {
+                     
+                        handleMulti(value);
+                      }}
+                      options={memberOptions}
+                    />
                   </div>
                 </CardBody>
               </Card>

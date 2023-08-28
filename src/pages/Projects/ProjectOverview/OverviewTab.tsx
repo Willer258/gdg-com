@@ -1,27 +1,37 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Card,
   CardBody,
   CardHeader,
   Col,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
+  Form,
+  Label,
+  Modal,
+  ModalBody,
+  ModalHeader,
   Row,
-  UncontrolledDropdown,
 } from "reactstrap";
 
 //import images
 import avatar2 from "../../../assets/images/users/avatar-2.jpg";
-import avatar3 from "../../../assets/images/users/avatar-3.jpg";
-import avatar4 from "../../../assets/images/users/avatar-4.jpg";
-import avatar7 from "../../../assets/images/users/avatar-7.jpg";
 
 //SimpleBar
 import SimpleBar from "simplebar-react";
+import { useFormik } from "formik";
+import { useGetMembersQuery } from "../../../redux/features/services/memberServices";
+import { useAddMembreOnEventMutation } from "../../../redux/features/services/eventsServices";
 
 const OverviewTab = ({ data }: any) => {
+  console.log(data.organizers_team);
+  const membre = data && JSON.parse(data.organizers_team);
+
+  console.log(membre);
+
+
+  
+
+
   return (
     <React.Fragment>
       <Row>
@@ -103,16 +113,7 @@ const OverviewTab = ({ data }: any) => {
           <Card>
             <CardHeader className="align-items-center d-flex border-bottom-dashed">
               <h4 className="card-title mb-0 flex-grow-1">Certifiés</h4>
-              <div className="flex-shrink-0">
-                <button
-                  type="button"
-                  className="btn btn-soft-danger btn-sm"
-                  data-bs-toggle="modal"
-                  data-bs-target="#inviteMembersModal"
-                >
-                  <i className="ri-share-line me-1 align-bottom"></i> Ajoutez des certifiés
-                </button>
-              </div>
+             
             </CardHeader>
 
             <CardBody>
@@ -125,28 +126,39 @@ const OverviewTab = ({ data }: any) => {
                   {data.participants &&
                     data.participants.map((item: any, index: number) => (
                       <div key={index} className="d-flex align-items-center">
-                        <div className="avatar-xs flex-shrink-0 me-3">
-                          <img
-                            src={avatar2}
-                            alt=""
-                            className="img-fluid rounded-circle"
-                          />
+                     <div className="avatar-xs flex-shrink-0 me-3">
+                          <div className="avatar-title bg-soft-success text-success rounded-circle">
+                            {item.first_name.charAt(0) +
+                              item.last_name
+                                .split(" ")
+                                .slice(-1)
+                                .toString()
+                                .charAt(0)}
+                          </div>
                         </div>
                         <div className="flex-grow-1">
                           <h5 className="fs-13 mb-0">
                             <Link to="#" className="text-body d-block">
-                              {item.first_name + "" + item.last_name}
+                              {item.first_name + " " + item.last_name}
                             </Link>
                           </h5>
                         </div>
                         <div className="flex-shrink-0">
                           <div className="d-flex align-items-center gap-1">
+
+                          <Link
+                              to={"/details-membre"}
+                              state={{ id: item.id }}
+                             
+                            >
                             <button
                               type="button"
                               className="btn btn-light btn-sm"
                             >
                               Voir le profil
                             </button>
+                            </Link>
+                            
                           </div>
                         </div>
                       </div>
@@ -279,19 +291,9 @@ const OverviewTab = ({ data }: any) => {
           <Card>
             <CardHeader className="align-items-center d-flex border-bottom-dashed">
               <h4 className="card-title mb-0 flex-grow-1">
-                Membre de l'organisation{" "}
+                Membres de l'organisation
               </h4>
-              <div className="flex-shrink-0">
-                <button
-                  type="button"
-                  className="btn btn-soft-danger btn-sm"
-                  data-bs-toggle="modal"
-                  data-bs-target="#inviteMembersModal"
-                >
-                  <i className="ri-share-line me-1 align-bottom"></i> Invite
-                  Member
-                </button>
-              </div>
+              <div className="flex-shrink-0"></div>
             </CardHeader>
 
             <CardBody>
@@ -301,317 +303,39 @@ const OverviewTab = ({ data }: any) => {
                 className="mx-n3 px-3"
               >
                 <div className="vstack gap-3">
-                  <div className="d-flex align-items-center">
-                    <div className="avatar-xs flex-shrink-0 me-3">
-                      <img
-                        src={avatar2}
-                        alt=""
-                        className="img-fluid rounded-circle"
-                      />
-                    </div>
-                    <div className="flex-grow-1">
-                      <h5 className="fs-13 mb-0">
-                        <Link to="#" className="text-body d-block">
-                          Nancy Martino
-                        </Link>
-                      </h5>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <div className="d-flex align-items-center gap-1">
-                        <button type="button" className="btn btn-light btn-sm">
-                          Message
-                        </button>
-                        <UncontrolledDropdown>
-                          <DropdownToggle
-                            type="button"
-                            className="btn btn-icon btn-sm fs-16 text-muted dropdown"
-                            tag="button"
-                          >
-                            <i className="ri-more-fill"></i>
-                          </DropdownToggle>
-                          <DropdownMenu>
-                            <li>
-                              <DropdownItem>
-                                <i className="ri-eye-fill text-muted me-2 align-bottom"></i>
-                                View
-                              </DropdownItem>
-                            </li>
-                            <li>
-                              <DropdownItem>
-                                <i className="ri-star-fill text-muted me-2 align-bottom"></i>
-                                Favourite
-                              </DropdownItem>
-                            </li>
-                            <li>
-                              <DropdownItem>
-                                <i className="ri-delete-bin-5-fill text-muted me-2 align-bottom"></i>
-                                Delete
-                              </DropdownItem>
-                            </li>
-                          </DropdownMenu>
-                        </UncontrolledDropdown>
+                  {membre &&
+                    membre.map((member: any, index: number) => (
+                      <div key={index} className="d-flex align-items-center">
+                        <div className="avatar-xs flex-shrink-0 me-3">
+                          <div className="avatar-title bg-soft-success text-success rounded-circle">
+                            {member.first_name.charAt(0) +
+                              member.last_name
+                                .split(" ")
+                                .slice(-1)
+                                .toString()
+                                .charAt(0)}
+                          </div>
+                        </div>
+                        <div className="flex-grow-1">
+                          <h5 className="fs-13 mb-0">
+                            <Link to="#" className="text-body d-block">
+                              {member.first_name + " " + member.last_name}
+                            </Link>
+                          </h5>
+                        </div>
+                        <div className="flex-shrink-0">
+                          <div className="d-flex align-items-center gap-1">
+                            <Link
+                              to={"/details-membre"}
+                              state={{ id: member.id }}
+                              className="btn btn-light view-btn"
+                            >
+                              Profil
+                            </Link>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-
-                  <div className="d-flex align-items-center">
-                    <div className="avatar-xs flex-shrink-0 me-3">
-                      <div className="avatar-title bg-soft-danger text-danger rounded-circle">
-                        HB
-                      </div>
-                    </div>
-                    <div className="flex-grow-1">
-                      <h5 className="fs-13 mb-0">
-                        <Link to="#" className="text-body d-block">
-                          Henry Baird
-                        </Link>
-                      </h5>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <div className="d-flex align-items-center gap-1">
-                        <button type="button" className="btn btn-light btn-sm">
-                          Message
-                        </button>
-                        <UncontrolledDropdown>
-                          <DropdownToggle
-                            type="button"
-                            className="btn btn-icon btn-sm fs-16 text-muted dropdown"
-                            tag="button"
-                          >
-                            <i className="ri-more-fill"></i>
-                          </DropdownToggle>
-                          <DropdownMenu>
-                            <li>
-                              <DropdownItem>
-                                <i className="ri-eye-fill text-muted me-2 align-bottom"></i>
-                                View
-                              </DropdownItem>
-                            </li>
-                            <li>
-                              <DropdownItem>
-                                <i className="ri-star-fill text-muted me-2 align-bottom"></i>
-                                Favourite
-                              </DropdownItem>
-                            </li>
-                            <li>
-                              <DropdownItem>
-                                <i className="ri-delete-bin-5-fill text-muted me-2 align-bottom"></i>
-                                Delete
-                              </DropdownItem>
-                            </li>
-                          </DropdownMenu>
-                        </UncontrolledDropdown>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="d-flex align-items-center">
-                    <div className="avatar-xs flex-shrink-0 me-3">
-                      <img
-                        src={avatar3}
-                        alt=""
-                        className="img-fluid rounded-circle"
-                      />
-                    </div>
-                    <div className="flex-grow-1">
-                      <h5 className="fs-13 mb-0">
-                        <Link to="#" className="text-body d-block">
-                          Frank Hook
-                        </Link>
-                      </h5>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <div className="d-flex align-items-center gap-1">
-                        <button type="button" className="btn btn-light btn-sm">
-                          Message
-                        </button>
-                        <UncontrolledDropdown>
-                          <DropdownToggle
-                            type="button"
-                            className="btn btn-icon btn-sm fs-16 text-muted dropdown"
-                            tag="button"
-                          >
-                            <i className="ri-more-fill"></i>
-                          </DropdownToggle>
-                          <DropdownMenu>
-                            <li>
-                              <DropdownItem>
-                                <i className="ri-eye-fill text-muted me-2 align-bottom"></i>
-                                View
-                              </DropdownItem>
-                            </li>
-                            <li>
-                              <DropdownItem>
-                                <i className="ri-star-fill text-muted me-2 align-bottom"></i>
-                                Favourite
-                              </DropdownItem>
-                            </li>
-                            <li>
-                              <DropdownItem>
-                                <i className="ri-delete-bin-5-fill text-muted me-2 align-bottom"></i>
-                                Delete
-                              </DropdownItem>
-                            </li>
-                          </DropdownMenu>
-                        </UncontrolledDropdown>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="d-flex align-items-center">
-                    <div className="avatar-xs flex-shrink-0 me-3">
-                      <img
-                        src={avatar4}
-                        alt=""
-                        className="img-fluid rounded-circle"
-                      />
-                    </div>
-                    <div className="flex-grow-1">
-                      <h5 className="fs-13 mb-0">
-                        <Link to="#" className="text-body d-block">
-                          Jennifer Carter
-                        </Link>
-                      </h5>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <div className="d-flex align-items-center gap-1">
-                        <button type="button" className="btn btn-light btn-sm">
-                          Message
-                        </button>
-                        <UncontrolledDropdown>
-                          <DropdownToggle
-                            type="button"
-                            className="btn btn-icon btn-sm fs-16 text-muted dropdown"
-                            tag="button"
-                          >
-                            <i className="ri-more-fill"></i>
-                          </DropdownToggle>
-                          <DropdownMenu>
-                            <li>
-                              <DropdownItem>
-                                <i className="ri-eye-fill text-muted me-2 align-bottom"></i>
-                                View
-                              </DropdownItem>
-                            </li>
-                            <li>
-                              <DropdownItem>
-                                <i className="ri-star-fill text-muted me-2 align-bottom"></i>
-                                Favourite
-                              </DropdownItem>
-                            </li>
-                            <li>
-                              <DropdownItem>
-                                <i className="ri-delete-bin-5-fill text-muted me-2 align-bottom"></i>
-                                Delete
-                              </DropdownItem>
-                            </li>
-                          </DropdownMenu>
-                        </UncontrolledDropdown>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="d-flex align-items-center">
-                    <div className="avatar-xs flex-shrink-0 me-3">
-                      <div className="avatar-title bg-soft-success text-success rounded-circle">
-                        AC
-                      </div>
-                    </div>
-                    <div className="flex-grow-1">
-                      <h5 className="fs-13 mb-0">
-                        <Link to="#" className="text-body d-block">
-                          Alexis Clarke
-                        </Link>
-                      </h5>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <div className="d-flex align-items-center gap-1">
-                        <button type="button" className="btn btn-light btn-sm">
-                          Message
-                        </button>
-                        <UncontrolledDropdown>
-                          <DropdownToggle
-                            tag="button"
-                            className="btn btn-icon btn-sm fs-16 text-muted dropdown"
-                          >
-                            <i className="ri-more-fill"></i>
-                          </DropdownToggle>
-                          <DropdownMenu>
-                            <li>
-                              <DropdownItem>
-                                <i className="ri-eye-fill text-muted me-2 align-bottom"></i>
-                                View
-                              </DropdownItem>
-                            </li>
-                            <li>
-                              <DropdownItem>
-                                <i className="ri-star-fill text-muted me-2 align-bottom"></i>
-                                Favourite
-                              </DropdownItem>
-                            </li>
-                            <li>
-                              <DropdownItem>
-                                <i className="ri-delete-bin-5-fill text-muted me-2 align-bottom"></i>
-                                Delete
-                              </DropdownItem>
-                            </li>
-                          </DropdownMenu>
-                        </UncontrolledDropdown>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="d-flex align-items-center">
-                    <div className="avatar-xs flex-shrink-0 me-3">
-                      <img
-                        src={avatar7}
-                        alt=""
-                        className="img-fluid rounded-circle"
-                      />
-                    </div>
-                    <div className="flex-grow-1">
-                      <h5 className="fs-13 mb-0">
-                        <Link to="#" className="text-body d-block">
-                          Joseph Parker
-                        </Link>
-                      </h5>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <div className="d-flex align-items-center gap-1">
-                        <button type="button" className="btn btn-light btn-sm">
-                          Message
-                        </button>
-                        <UncontrolledDropdown>
-                          <DropdownToggle
-                            tag="button"
-                            className="btn btn-icon btn-sm fs-16 text-muted dropdown"
-                          >
-                            <i className="ri-more-fill"></i>
-                          </DropdownToggle>
-                          <DropdownMenu>
-                            <li>
-                              <DropdownItem>
-                                <i className="ri-eye-fill text-muted me-2 align-bottom"></i>
-                                View
-                              </DropdownItem>
-                            </li>
-                            <li>
-                              <DropdownItem>
-                                <i className="ri-star-fill text-muted me-2 align-bottom"></i>
-                                Favourite
-                              </DropdownItem>
-                            </li>
-                            <li>
-                              <DropdownItem>
-                                <i className="ri-delete-bin-5-fill text-muted me-2 align-bottom"></i>
-                                Delete
-                              </DropdownItem>
-                            </li>
-                          </DropdownMenu>
-                        </UncontrolledDropdown>
-                      </div>
-                    </div>
-                  </div>
+                    ))}
                 </div>
               </SimpleBar>
             </CardBody>
@@ -757,5 +481,7 @@ const OverviewTab = ({ data }: any) => {
     </React.Fragment>
   );
 };
+
+
 
 export default OverviewTab;

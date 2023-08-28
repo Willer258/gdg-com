@@ -12,7 +12,6 @@ import avatar1 from '../../../assets/images/users/avatar-1.jpg';
 import Overview from './Tabs/Overview';
 import Activity from './Tabs/Activity';
 import Projects from './Tabs/Projects';
-import Documents from './Tabs/Documents';
 import { useGetOneMemberQuery } from '../../../redux/features/services/memberServices';
 
 const SimplePage = () => {
@@ -79,7 +78,7 @@ const SimplePage = () => {
                             <Col>
                                 <div className="p-2">
                                     <h3 className="text-white mb-1"> {data.last_name} {data.first_name}</h3>
-                                    <p className="text-white-75">Owner & Founder</p>
+                                    <p className="text-white-75">{data.job}</p>
                                     <div className="hstack text-white-50 gap-1">
                                         <div className="me-2"><i
                                             className="ri-map-pin-user-line me-1 text-white-75 fs-16 align-middle"></i>{data.commune}</div>
@@ -122,7 +121,7 @@ const SimplePage = () => {
                                                 onClick={() => { toggleTab('1'); }}
                                             >
                                                 <i className="ri-airplay-fill d-inline-block d-md-none"></i> <span
-                                                    className="d-none d-md-inline-block">Overview</span>
+                                                    className="d-none d-md-inline-block">Information personnelle</span>
                                             </NavLink>
                                         </NavItem>
                                         <NavItem>
@@ -132,7 +131,7 @@ const SimplePage = () => {
                                                 onClick={() => { toggleTab('2'); }}
                                             >
                                                 <i className="ri-list-unordered d-inline-block d-md-none"></i> <span
-                                                    className="d-none d-md-inline-block">Activities</span>
+                                                    className="d-none d-md-inline-block">Contributions</span>
                                             </NavLink>
                                         </NavItem>
                                         <NavItem>
@@ -145,27 +144,17 @@ const SimplePage = () => {
                                                     className="d-none d-md-inline-block">Projects</span>
                                             </NavLink>
                                         </NavItem>
-                                        <NavItem>
-                                        
-                                            <NavLink
-                                                href="#"
-                                                className={classnames({ active: activeTab === '4' })}
-                                                onClick={() => { toggleTab('4'); }}
-                                            >
-                                                <i className="ri-folder-4-line d-inline-block d-md-none"></i> <span
-                                                    className="d-none d-md-inline-block">Documents</span>
-                                            </NavLink>
-                                        </NavItem>
+                                      
                                     </Nav>
                                     <div className="flex-shrink-0">
-                                        <Link to="/edit-membre" className="btn btn-success"><i
+                                        <Link to="/edit-membre"   state={{ id: data.id }} className="btn btn-success"><i
                                             className="ri-edit-box-line align-bottom"></i> Modifier les informations</Link>
                                     </div>
                                 </div>
 
                                 <TabContent activeTab={activeTab} className="pt-4">
                                     <TabPane tabId="1">
-                                       <Overview/>
+                                       <Overview data={data}/>
                                     </TabPane>
                                     <TabPane tabId="2">
                                      <Activity/>
@@ -175,9 +164,7 @@ const SimplePage = () => {
                                      <Projects/>
                                     </TabPane>
 
-                                    <TabPane tabId="4">
-                                      <Documents/>
-                                    </TabPane>
+                                   
                                 </TabContent>
                             </div>
                         </Col>

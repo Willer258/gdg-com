@@ -16,13 +16,11 @@ import BreadCrumb from "../../../Components/Common/BreadCrumb";
 // import Flatpickr from "react-flatpickr";
 import Select from "react-select";
 
-import Dropzone from "react-dropzone";
 
 //Import Images
-import avatar3 from "../../../assets/images/users/avatar-3.jpg";
-import avatar4 from "../../../assets/images/users/avatar-4.jpg";
 import { useFormik } from "formik";
 import { useAddEventMutation } from "../../../redux/features/services/eventsServices";
+import { useGetMembersQuery } from "../../../redux/features/services/memberServices";
 
 const CreateProject = () => {
   const SingleOptions = [
@@ -33,37 +31,52 @@ const CreateProject = () => {
     { value: "4 star", label: "4 star" },
   ];
 
+  const { data = [], isLoading, isError,
+    //  errorcl
+     } = useGetMembersQuery(1);
+
+     console.log(data)
+
+     const memberOptions  = data.results && data.results.map((item: any) => ({
+      value: item.id,
+      label: item.first_name + " " + item.last_name
+     }))
   const [selectedMulti, setselectedMulti] = useState(null);
+  const [Membres , setMembres]:any = useState([])
 
   const handleMulti = (selectedMulti?: any) => {
+
+    console.log(selectedMulti , 'sell')
+
+    const nouveauTableau = selectedMulti.map((selection: { label: any; value: any; }) => {
+   
+      const element = data.results.find((item: { id: any; }) => item.id === selection.value);
+      console.log(element)
+      if (element) {
+          return {
+            id : element.id,
+              first_name: element.first_name,
+              last_name: element.last_name,
+
+          };
+      }
+  });
+
+  setMembres(JSON.stringify(nouveauTableau))
+    console.log(JSON.stringify(nouveauTableau))
+
+    
     setselectedMulti(selectedMulti);
   };
 
-  //Dropzone file upload
-  const [selectedFiles, setselectedFiles] = useState([]);
 
-  const handleAcceptedFiles = (files: any) => {
-    files.map((file: any) =>
-      Object.assign(file, {
-        preview: URL.createObjectURL(file),
-        formattedSize: formatBytes(file.size),
-      })
-    );
-    setselectedFiles(files);
-  };
 
+
+ 
   /**
    * Formats the size
    */
-  const formatBytes = (bytes: any, decimals = 2) => {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
 
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
-  };
 
   document.title =
     "Creer evenement | Velzon - React Admin & Dashboard Template";
@@ -84,19 +97,21 @@ const CreateProject = () => {
     initialValues: {
       name: (event && event.name) || "",
       lieu: (event && event.lieu) || "",
-     
+     description: (event && event.description) || "",
+     manager: (event && event.manager) || "",
       isActive: (event && event.isActive) || "",
     },
 
     onSubmit: async (values: any) => {
+        
         values.is_active = values.isActive === 'En cours' ? true : false
-      const DataValidate = { ...values, date: dateEvent , };
-
-    
+        values.organizers_team = Membres
+        values.date = dateEvent
+      
 
       try {
         await addEvent({
-            ...DataValidate
+          ...values
         }).unwrap();
         navigate(-1)
 
@@ -111,6 +126,7 @@ const CreateProject = () => {
     },
   });
 
+ 
   
   return (
     <React.Fragment>
@@ -188,7 +204,9 @@ const CreateProject = () => {
 
                     <div className="mb-3">
                       <Label className="form-label">Description </Label>
-                      <Input id="exampleText" name="text" type="textarea" />
+                      <Input id="exampleText"  onChange={validation.handleChange}
+                        onBlur={validation.handleBlur}
+                        value={validation.values.description || ""} name="description" type="textarea" />
                     </div>
 
                     <Row>
@@ -249,7 +267,7 @@ const CreateProject = () => {
                     </Row>
                   </CardBody>
                 </Card>
-                <Card>
+                {/* <Card>
                   <CardHeader>
                     <h5 className="card-title mb-0">Photos souvenirs</h5>
                   </CardHeader>
@@ -314,14 +332,14 @@ const CreateProject = () => {
                       </ul>
                     </div>
                   </CardBody>
-                </Card>
+                </Card> */}
 
                 <div className="text-end mb-4">
                   <button className="btn btn-secondary w-sm me-1">
                     Retour
                   </button>
                   <button type="submit" className="btn btn-success w-sm">
-                    Creer
+                    Créer
                   </button>
                 </div>
               </Form>{" "}
@@ -354,7 +372,7 @@ const CreateProject = () => {
                 </CardBody>
               </div> */}
 
-              <div className="card">
+              {/* <div className="card">
                 <div className="card-header">
                   <h5 className="card-title mb-0">Caracteristiques</h5>
                 </div>
@@ -391,7 +409,7 @@ const CreateProject = () => {
                     />
                   </div>
                 </CardBody>
-              </div>
+              </div> */}
 
               <Card>
                 <CardHeader>
@@ -400,93 +418,35 @@ const CreateProject = () => {
                 <CardBody>
                   <div className="mb-3">
                     <Label htmlFor="choices-lead-input" className="form-label">
-                      Chef{" "}
+                     Responsable de l'evenement
                     </Label>
-                    <select
-                      className="form-select"
-                      data-choices
-                      data-choices-search-false
-                      id="choices-lead-input"
-                    >
-                      <option defaultValue="Brent Gonzalez">
-                        Brent Gonzalez
-                      </option>
-                      <option value="Darline Williams">Darline Williams</option>
-                      <option value="Sylvia Wright">Sylvia Wright</option>
-                      <option value="Ellen Smith">Ellen Smith</option>
-                      <option value="Jeffrey Salazar">Jeffrey Salazar</option>
-                      <option value="Mark Williams">Mark Williams</option>
-                    </select>
+                  <Input
+                        type="text"
+                        className="form-control"
+                        id="manager"
+                        placeholder="Entrer le nom du responsable de l'evenement"
+                        onChange={validation.handleChange}
+                        onBlur={validation.handleBlur}
+                        value={validation.values.manager || ""}
+                        invalid={
+                          validation.touched.manager && validation.errors.manager
+                            ? true
+                            : false
+                        }
+                      />
                   </div>
 
                   <div>
                     <Label className="form-label"> Membres</Label>
-                    <div className="avatar-group">
-                      <Link
-                        to="#"
-                        className="avatar-group-item"
-                        data-bs-toggle="tooltip"
-                        data-bs-trigger="hover"
-                        data-bs-placement="top"
-                        title="Brent Gonzalez"
-                      >
-                        <div className="avatar-xs">
-                          <img
-                            src={avatar3}
-                            alt=""
-                            className="rounded-circle img-fluid"
-                          />
-                        </div>
-                      </Link>
-                      <Link
-                        to="#"
-                        className="avatar-group-item"
-                        data-bs-toggle="tooltip"
-                        data-bs-trigger="hover"
-                        data-bs-placement="top"
-                        title="Sylvia Wright"
-                      >
-                        <div className="avatar-xs">
-                          <div className="avatar-title rounded-circle bg-secondary">
-                            S
-                          </div>
-                        </div>
-                      </Link>
-                      <Link
-                        to="#"
-                        className="avatar-group-item"
-                        data-bs-toggle="tooltip"
-                        data-bs-trigger="hover"
-                        data-bs-placement="top"
-                        title="Ellen Smith"
-                      >
-                        <div className="avatar-xs">
-                          <img
-                            src={avatar4}
-                            alt=""
-                            className="rounded-circle img-fluid"
-                          />
-                        </div>
-                      </Link>
-                      <Link
-                        to="#"
-                        className="avatar-group-item"
-                        data-bs-toggle="tooltip"
-                        data-bs-trigger="hover"
-                        data-bs-placement="top"
-                        title="Add Members"
-                      >
-                        <div
-                          className="avatar-xs"
-                          data-bs-toggle="modal"
-                          data-bs-target="#inviteMembersModal"
-                        >
-                          <div className="avatar-title fs-16 rounded-circle bg-light border-dashed border text-primary">
-                            +
-                          </div>
-                        </div>
-                      </Link>
-                    </div>
+                      <Select
+                                                            value={selectedMulti}
+                                                            isMulti={true}
+                                                            isClearable={true}
+                                                            onChange={(value) => {
+                                                                handleMulti(value);
+                                                            }}
+                                                            options={memberOptions}
+                                                        />
                   </div>
                 </CardBody>
               </Card>

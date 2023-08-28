@@ -485,7 +485,7 @@ const Team = () => {
                                   state={{ id: item.id }}
                                   className="btn btn-light view-btn"
                                 >
-                                  View Profile
+                                 Consulter son profil
                                 </Link>
                               </div>
                             </Col>

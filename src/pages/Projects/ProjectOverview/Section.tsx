@@ -138,34 +138,7 @@ const Section = () => {
                       Details
                     </NavLink>
                   </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className={classnames(
-                        { active: activeTab === "2" },
-                        "fw-semibold"
-                      )}
-                      onClick={() => {
-                        toggleTab("2");
-                      }}
-                      href="#"
-                    >
-                      Documents
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      className={classnames(
-                        { active: activeTab === "3" },
-                        "fw-semibold"
-                      )}
-                      onClick={() => {
-                        toggleTab("3");
-                      }}
-                      href="#"
-                    >
-                      Activités
-                    </NavLink>
-                  </NavItem>
+                 
                   <NavItem>
                     <NavLink
                       className={classnames(
@@ -192,14 +165,9 @@ const Section = () => {
             <TabPane tabId="1">
               <OverviewTab data ={data} />
             </TabPane>
-            <TabPane tabId="2">
-              <DocumentsTab />
-            </TabPane>
-            <TabPane tabId="3">
-              <ActivitiesTab />
-            </TabPane>
+           
             <TabPane tabId="4">
-              <TeamTab />
+              <TeamTab data={data} />
             </TabPane>
           </TabContent>
         </Col>

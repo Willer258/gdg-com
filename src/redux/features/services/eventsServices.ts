@@ -43,6 +43,18 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
         invalidatesTags: ["events"],
       }),
  
+
+      addMembreOnEvent: builder.mutation({
+        query: (initialEvent) => ({
+          url: "/certificates",
+          method: "POST",
+          body: {
+            ...initialEvent,
+          },
+        }),
+        invalidatesTags: ["events"],
+      }),
+      
   }),
 });
 
@@ -51,6 +63,7 @@ export const {
   useAddEventMutation,
   useEditEventMutation,
   useDeleteEventMutation,
+  useAddMembreOnEventMutation,
   useGetOneEventQuery,
  
 } = extendedApiSlice;
